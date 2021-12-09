@@ -24,23 +24,23 @@ app.use(
 
 router.get('/sse', async (ctx) => {
   streamEvents(ctx.req, ctx.res, {
+    async fetch() {
+      return [];
+    },
     stream(sse) {
-      sse.sendEvent({
-        id: uuidv4(),
-        data: JSON.stringify({}),
-        event: 'comment'
-      });
-      setTimeout(() => {
+      const interval = setInterval(() => {
         sse.sendEvent({
           id: uuidv4(),
-          data: JSON.stringify({}),
+          data: JSON.stringify({field: 'value'}),
           event: 'comment'
         });
-      }, 20000);
+      }, 5000);
+  
+      return () => clearInterval(interval);
     }
   });
-
-  ctx.respond = false;
+  
+  ctx.respond = false; // koa не будет обрабатывать ответ
 });
 
 
