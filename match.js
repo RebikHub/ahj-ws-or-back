@@ -25,7 +25,6 @@ module.exports = class Match {
   
     probability() {
       const chance = Math.round(Math.random() * 10);
-      console.log(chance);
       if (chance < 5) {
         return {
             type: 'action',
